@@ -7,7 +7,8 @@ namespace MonoTest.App_Start
     using System.Web;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-
+    using MonoTest.Services;
+    using MonoTest.Services.Interfaces;
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
@@ -61,6 +62,7 @@ namespace MonoTest.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IVehicleService>().To<VehicleService>();
         }
     }
 }
