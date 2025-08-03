@@ -7,6 +7,9 @@ namespace MonoTest.App_Start
     using System.Web;
 
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+    using MonoTest.Data;
+    using MonoTest.Repository;
+    using MonoTest.Repository.Interfaces;
     using MonoTest.Services;
     using MonoTest.Services.Interfaces;
     using Ninject;
@@ -63,6 +66,8 @@ namespace MonoTest.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IVehicleService>().To<VehicleService>();
+            kernel.Bind<MonoTestContext>().ToSelf().InRequestScope();
+            kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
         }
     }
 }
