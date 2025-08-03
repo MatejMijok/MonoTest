@@ -150,7 +150,9 @@
     <Compile Include="Models\VehicleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Interfaces\IVehicleMakeRepository.cs" />
+    <Compile Include="Repository\Interfaces\IVehicleModelRepository.cs" />
     <Compile Include="Repository\VehicleMakeRepository.cs" />
+    <Compile Include="Repository\VehicleModelRepository.cs" />
     <Compile Include="Services\Interfaces\IVehicleService.cs" />
     <Compile Include="Services\VehicleService.cs" />
   </ItemGroup>

@@ -68,6 +68,7 @@ namespace MonoTest.App_Start
             kernel.Bind<IVehicleService>().To<VehicleService>();
             kernel.Bind<MonoTestContext>().ToSelf().InRequestScope();
             kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
+            kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();
         }
     }
 }
