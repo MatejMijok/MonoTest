@@ -3,11 +3,11 @@
 
 namespace MonoTest.App_Start
 {
-    using System;
-    using System.Web;
-
+    using AutoMapper;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using MonoTest.Data;
+    using MonoTest.Mappings;
     using MonoTest.Repository;
     using MonoTest.Repository.Interfaces;
     using MonoTest.Services;
@@ -15,6 +15,10 @@ namespace MonoTest.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using Ninject.Web.Common.WebHost;
+    using Ninject.Web.Mvc;
+    using System;
+    using System.Web;
+    using System.Web.Mvc;
 
     public static class NinjectWebCommon 
     {
@@ -69,6 +73,18 @@ namespace MonoTest.App_Start
             kernel.Bind<MonoTestContext>().ToSelf().InRequestScope();
             kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
             kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();
+
+            var loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MappingProfile>();
+            }, loggerFactory);
+
+            var mapper = config.CreateMapper();
+
+            kernel.Bind<IMapper>().ToConstant(mapper);
+
         }
     }
 }
