@@ -1,4 +1,5 @@
 ﻿using MonoTest.Models;
+using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace MonoTest.Services.Interfaces
 {
-    internal interface IVehicleService
+    public interface IVehicleService
     {
-        Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync();
-        Task<VehicleMake> GetVehicleMakeByIdAsync(int id);
-        Task AddVehicleMakeAsync(VehicleMake vehicleMake);
-        Task UpdateVehicleMakeAsync(int id, VehicleMake vehicleMake);
-        Task DeleteVehicleMakeAsync(int id);
-        Task<IEnumerable<VehicleModel>> GetVehicleModelsAsync();
-        Task<VehicleModel> GetVehicleModelByIdAsync(int id);
-        Task AddVehicleModelAsync(VehicleModel vehicleModel);
-        Task UpdateVehicleModelAsync(int id, VehicleModel vehicleModel);
-        Task DeleteVehicleModelAsync(int id);
+        Task<IEnumerable<VehicleMakeViewModel>> GetVehicleMakesAsync();
+        Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int? id);
+        Task AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel);
+        Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMakeViewModel);
+        Task DeleteVehicleMakeAsync(int? id);
+        Task<IEnumerable<VehicleModelViewModel>> GetVehicleModelsAsync();
+        Task<VehicleModelViewModel> GetVehicleModelByIdAsync(int? id);
+        Task AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel);
+        Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModelViewModel);
+        Task DeleteVehicleModelAsync(int? id);
     }
 }

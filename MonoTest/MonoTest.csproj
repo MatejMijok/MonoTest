@@ -245,8 +245,8 @@
     <Compile Include="Repository\VehicleModelRepository.cs" />
     <Compile Include="Services\Interfaces\IVehicleService.cs" />
     <Compile Include="Services\VehicleService.cs" />
-    <Compile Include="Viewmodels\VehicleMakeViewModel.cs" />
-    <Compile Include="Viewmodels\VehicleModelViewModel.cs" />
+    <Compile Include="ViewModels\VehicleMakeViewModel.cs" />
+    <Compile Include="ViewModels\VehicleModelViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />

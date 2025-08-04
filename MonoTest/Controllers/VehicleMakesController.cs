@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using MonoTest.Data;
 using MonoTest.Models;
+using MonoTest.Services.Interfaces;
+using AutoMapper;
 
 namespace MonoTest.Controllers
 {
@@ -16,10 +18,20 @@ namespace MonoTest.Controllers
     {
         private MonoTestContext db = new MonoTestContext();
 
+        private readonly IVehicleService _vehicleService;
+        private readonly IMapper _mapper;
+
+        public VehicleMakesController(IVehicleService vehicleService, IMapper mapper)
+        {
+            _vehicleService = vehicleService;
+            _mapper = mapper;
+        }
+
         // GET: VehicleMakes
         public async Task<ActionResult> Index()
         {
-            return View(await db.VehicleMakes.ToListAsync());
+            var makes = await _vehicleService.GetVehicleMakesAsync();
+            return View(makes);
         }
 
         // GET: VehicleMakes/Details/5
@@ -29,7 +41,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleMake vehicleMake = await db.VehicleMakes.FindAsync(id);
+            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();

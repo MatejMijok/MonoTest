@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MonoTest.Models;
-using MonoTest.Viewmodels;
+using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

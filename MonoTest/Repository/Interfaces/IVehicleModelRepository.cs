@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MonoTest.Repository.Interfaces
 {
-    internal interface IVehicleModelRepository
+    public interface IVehicleModelRepository
     {
         Task<IEnumerable<VehicleModel>> GetVehicleModelsAsync();
         Task<VehicleModel> GetVehicleModelByIdAsync(int id);
