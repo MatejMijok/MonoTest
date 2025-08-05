@@ -26,22 +26,24 @@ namespace MonoTest.Services
 
         public async Task AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
         {
-            throw new NotImplementedException();
+            var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
+            await _makeRepository.AddVehicleMakeAsync(vehicleMake);
         }
 
         public async Task AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
         {
-            throw new NotImplementedException();
+            var vehicleModel = _mapper.Map<VehicleModel>(vehicleModelViewModel);
+            await _modelRepository.AddVehicleModelAsync(vehicleModel);
         }
 
         public async Task DeleteVehicleMakeAsync(int? id)
         {
-            throw new NotImplementedException();
+            await _makeRepository.DeleteVehicleMakeAsync(id.Value);
         }
 
         public async Task DeleteVehicleModelAsync(int? id)
         {
-            throw new NotImplementedException();
+            await _modelRepository.DeleteVehicleModelAsync(id.Value);
         }
 
         public async Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int? id)
@@ -58,22 +60,26 @@ namespace MonoTest.Services
 
         public async Task<VehicleModelViewModel> GetVehicleModelByIdAsync(int? id)
         {
-            throw new NotImplementedException();
+            var vehicleModel = await _modelRepository.GetVehicleModelByIdAsync(id.Value);
+            return _mapper.Map<VehicleModelViewModel>(vehicleModel);
         }
 
         public async Task<IEnumerable<VehicleModelViewModel>> GetVehicleModelsAsync()
         {
-            throw new NotImplementedException();
+            var vehicleModel = await _modelRepository.GetVehicleModelsAsync();
+            return _mapper.Map<IEnumerable<VehicleModelViewModel>>(vehicleModel);
         }
 
         public async Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMake)
         {
-            throw new NotImplementedException();
+            var vehicleMakeEntity = _mapper.Map<VehicleMake>(vehicleMake);
+            await _makeRepository.UpdateVehicleMakeAsync(id.Value, vehicleMakeEntity);
         }
 
         public async Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModel)
         {
-            throw new NotImplementedException();
+            var vehicleModelEntity = _mapper.Map<VehicleModel>(vehicleModel);
+            await _modelRepository.UpdateVehicleModelAsync(id.Value, vehicleModelEntity);
         }
     }
 }

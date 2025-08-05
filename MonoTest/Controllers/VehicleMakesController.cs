@@ -11,13 +11,12 @@ using MonoTest.Data;
 using MonoTest.Models;
 using MonoTest.Services.Interfaces;
 using AutoMapper;
+using MonoTest.ViewModels;
 
 namespace MonoTest.Controllers
 {
     public class VehicleMakesController : Controller
     {
-        private MonoTestContext db = new MonoTestContext();
-
         private readonly IVehicleService _vehicleService;
         private readonly IMapper _mapper;
 
@@ -60,16 +59,15 @@ namespace MonoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Abrv")] VehicleMakeViewModel vehicleMakeViewModel)
         {
             if (ModelState.IsValid)
             {
-                db.VehicleMakes.Add(vehicleMake);
-                await db.SaveChangesAsync();
+                await _vehicleService.AddVehicleMakeAsync(vehicleMakeViewModel);
                 return RedirectToAction("Index");
             }
 
-            return View(vehicleMake);
+            return View(vehicleMakeViewModel);
         }
 
         // GET: VehicleMakes/Edit/5
@@ -79,7 +77,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleMake vehicleMake = await db.VehicleMakes.FindAsync(id);
+            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();
@@ -92,12 +90,11 @@ namespace MonoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Abrv")] VehicleMake vehicleMake)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Abrv")] VehicleMakeViewModel vehicleMake)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicleMake).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                await _vehicleService.UpdateVehicleMakeAsync(vehicleMake.Id, vehicleMake);
                 return RedirectToAction("Index");
             }
             return View(vehicleMake);
@@ -110,7 +107,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleMake vehicleMake = await db.VehicleMakes.FindAsync(id);
+            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();
@@ -123,19 +120,8 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            VehicleMake vehicleMake = await db.VehicleMakes.FindAsync(id);
-            db.VehicleMakes.Remove(vehicleMake);
-            await db.SaveChangesAsync();
+            await _vehicleService.DeleteVehicleMakeAsync(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

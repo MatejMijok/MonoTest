@@ -9,17 +9,28 @@ using System.Web;
 using System.Web.Mvc;
 using MonoTest.Data;
 using MonoTest.Models;
+using MonoTest.Services.Interfaces;
+using AutoMapper;
+using MonoTest.ViewModels;
 
 namespace MonoTest.Controllers
 {
     public class VehicleModelsController : Controller
     {
-        private MonoTestContext db = new MonoTestContext();
+        private readonly IVehicleService _vehicleService;
+        private readonly IMapper _mapper;
+
+        public VehicleModelsController(IVehicleService vehicleService, IMapper mapper)
+        {
+            _vehicleService = vehicleService;
+            _mapper = mapper;
+        }
 
         // GET: VehicleModels
         public async Task<ActionResult> Index()
         {
-            return View(await db.VehicleModels.ToListAsync());
+            var makes = await _vehicleService.GetVehicleModelsAsync();
+            return View(makes);
         }
 
         // GET: VehicleModels/Details/5
@@ -29,7 +40,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await db.VehicleModels.FindAsync(id);
+            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -48,12 +59,11 @@ namespace MonoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Abrv,MakeId")] VehicleModel vehicleModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,Abrv,MakeId")] VehicleModelViewModel vehicleModel)
         {
             if (ModelState.IsValid)
             {
-                db.VehicleModels.Add(vehicleModel);
-                await db.SaveChangesAsync();
+                await _vehicleService.AddVehicleModelAsync(vehicleModel);
                 return RedirectToAction("Index");
             }
 
@@ -67,7 +77,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await db.VehicleModels.FindAsync(id);
+            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -80,12 +90,11 @@ namespace MonoTest.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Abrv,MakeId")] VehicleModel vehicleModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,Abrv,MakeId")] VehicleModelViewModel vehicleModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(vehicleModel).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                await _vehicleService.UpdateVehicleModelAsync(vehicleModel.Id,vehicleModel);
                 return RedirectToAction("Index");
             }
             return View(vehicleModel);
@@ -98,7 +107,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            VehicleModel vehicleModel = await db.VehicleModels.FindAsync(id);
+            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -111,19 +120,8 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            VehicleModel vehicleModel = await db.VehicleModels.FindAsync(id);
-            db.VehicleModels.Remove(vehicleModel);
-            await db.SaveChangesAsync();
+            await _vehicleService.DeleteVehicleModelAsync(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
