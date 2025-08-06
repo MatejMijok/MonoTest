@@ -81,5 +81,20 @@ namespace MonoTest.Services
             var vehicleModelEntity = _mapper.Map<VehicleModel>(vehicleModel);
             await _modelRepository.UpdateVehicleModelAsync(id.Value, vehicleModelEntity);
         }
+
+        public async Task<IEnumerable<VehicleOverviewViewModel>> GetVehicleOverviewAsync() 
+        { 
+            var makes = await _makeRepository.GetVehicleMakesAsync();
+            var models = await _modelRepository.GetVehicleModelsAsync();
+
+            var vehicleOverviewList = models.Select(model => new VehicleOverviewViewModel
+            {
+                Name = model.Name,
+                Abrv = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Abrv,
+                MakeName = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Name
+            }).ToList();
+
+            return vehicleOverviewList;
+        }
     }
 }

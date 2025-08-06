@@ -20,5 +20,6 @@ namespace MonoTest.Services.Interfaces
         Task AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel);
         Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModelViewModel);
         Task DeleteVehicleModelAsync(int? id);
+        Task<IEnumerable<VehicleOverviewViewModel>> GetVehicleOverviewAsync();
     }
 }

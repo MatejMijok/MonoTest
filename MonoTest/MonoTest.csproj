@@ -247,6 +247,7 @@
     <Compile Include="Services\VehicleService.cs" />
     <Compile Include="ViewModels\VehicleMakeViewModel.cs" />
     <Compile Include="ViewModels\VehicleModelViewModel.cs" />
+    <Compile Include="ViewModels\VehicleOverviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
