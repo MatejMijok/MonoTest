@@ -8,6 +8,9 @@
             @Html.DisplayNameFor(model => model.First().MakeName)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.First().MakeAbrv)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.First().Abrv)
         </th>
         <th>
@@ -21,6 +24,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.MakeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MakeAbrv)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Abrv)

@@ -90,8 +90,9 @@ namespace MonoTest.Services
             var vehicleOverviewList = models.Select(model => new VehicleOverviewViewModel
             {
                 Name = model.Name,
-                Abrv = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Abrv,
-                MakeName = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Name
+                Abrv = model.Abrv,
+                MakeName = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Name,
+                MakeAbrv = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Abrv
             }).ToList();
 
             return vehicleOverviewList;
