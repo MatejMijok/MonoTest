@@ -1,23 +1,32 @@
-﻿@model List<MonoTest.ViewModels.VehicleOverviewViewModel>
-
+﻿@model PagedList.IPagedList<MonoTest.ViewModels.VehicleOverviewViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 <h2>Index</h2>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Get))
+{
+    <p>
+        Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.First().MakeName)
+            @Html.ActionLink("Make", "Index", new { sortOrder = ViewBag.MakeSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().MakeAbrv)
+            @Html.ActionLink("Make Abrv", "Index", new { sortOrder = ViewBag.AbrvSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Abrv)
+            @Html.ActionLink("Model Abrv", "Index", new { sortOrder = ViewBag.ModelAbrvSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.First().Name)
+            @Html.ActionLink("Model Name", "Index", new { sortOrder = ViewBag.ModelNameSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
-        <th></th>
     </tr>
+
 
     @foreach (var item in Model)
     {
@@ -38,3 +47,12 @@
     }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new
+{
+    page,
+    sortOrder = ViewBag.CurrentSort,
+    currentFilter = ViewBag.CurrentFilter
+}))
