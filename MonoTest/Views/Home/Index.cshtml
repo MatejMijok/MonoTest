@@ -3,6 +3,11 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
 <h2>Index</h2>
 
+@{ 
+    ViewBag.Title = "Home";
+}
+
+
 @using (Html.BeginForm("Index", "Home", FormMethod.Get))
 {
     <p>
