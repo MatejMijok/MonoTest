@@ -12,9 +12,11 @@ using MonoTest.Models;
 using MonoTest.Services.Interfaces;
 using AutoMapper;
 using MonoTest.ViewModels;
+using System.Web.Security;
 
 namespace MonoTest.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class VehicleModelsController : Controller
     {
         private readonly IVehicleService _vehicleService;

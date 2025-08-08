@@ -15,6 +15,7 @@ using MonoTest.ViewModels;
 
 namespace MonoTest.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class VehicleMakesController : Controller
     {
         private readonly IVehicleService _vehicleService;
