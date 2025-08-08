@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+﻿using AutoMapper;
 using MonoTest.Data;
 using MonoTest.Models;
 using MonoTest.Services.Interfaces;
-using AutoMapper;
 using MonoTest.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 using System.Web.Security;
 
 namespace MonoTest.Controllers
@@ -29,10 +30,11 @@ namespace MonoTest.Controllers
         }
 
         // GET: VehicleModels
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
-            var makes = await _vehicleService.GetVehicleModelsAsync();
-            return View(makes);
+            var models = await _vehicleService.GetVehicleModelsAsync();
+
+            return View(models);
         }
 
         // GET: VehicleModels/Details/5
