@@ -3,6 +3,7 @@ using MonoTest.Data;
 using MonoTest.Models;
 using MonoTest.Services.Interfaces;
 using MonoTest.ViewModels;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,6 +11,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -32,9 +34,60 @@ namespace MonoTest.Controllers
         // GET: VehicleModels
         public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.MakeSortParam = sortOrder == "model" ? "model_desc" : "model";
+            ViewBag.AbrvSortParam = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+            ViewBag.MakeIdSortParam = sortOrder == "makeId" ? "makeId_desc" : "abrv";
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.CurrentFilter = searchString ?? currentFilter;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
             var models = await _vehicleService.GetVehicleModelsAsync();
 
-            return View(models);
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                models = models
+                    .Where(m => m.Name.ToLower().Contains(searchString.ToLower())
+                             || m.Abrv.ToLower().Contains(searchString.ToLower()))
+                    .ToList();
+            }
+
+            switch (sortOrder) 
+            {
+                case "model":
+                    models = models.OrderBy(m => m.Name).ToList();
+                    break;
+                case "model_desc":
+                    models = models.OrderByDescending(m => m.Name).ToList();
+                    break;
+                case "abrv":
+                    models = models.OrderBy(m => m.Abrv).ToList();
+                    break;
+                case "abrv_desc":
+                    models = models.OrderByDescending(m => m.Abrv).ToList();
+                    break;
+                case "makeId":
+                    models = models.OrderByDescending(m => m.MakeId).ToList();
+                    break;
+                case "makeId_desc":
+                    models = models.OrderByDescending(m => m.MakeId).ToList();
+                    break;
+                default:
+                    models = models.OrderBy(m => m.Name).ToList();
+                    break;
+            }
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            return View(models.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: VehicleModels/Details/5
