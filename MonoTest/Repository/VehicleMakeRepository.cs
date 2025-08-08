@@ -39,7 +39,13 @@ namespace MonoTest.Repository
         }
        public async Task DeleteVehicleMakeAsync(int id)
         { 
-            _context.VehicleMakes.Remove(await GetVehicleMakeByIdAsync(id));
+            var make = await _context.VehicleMakes.FindAsync(id);
+            var models = await _context.VehicleModels.Where(vm => vm.MakeId == id).ToListAsync();
+
+            _context.VehicleModels.RemoveRange(models);
+
+            _context.VehicleMakes.Remove(make);
+
             await _context.SaveChangesAsync();
         }
     }
