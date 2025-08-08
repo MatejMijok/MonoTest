@@ -26,6 +26,7 @@ namespace MonoTest.Controllers
             ViewBag.ModelNameSortParam = sortOrder == "model_name" ? "model_name_desc" : "model_name";
             ViewBag.ModelAbrvSortParam = sortOrder == "model_abrv" ? "model_abrv_desc" : "model_abrv";
             ViewBag.AbrvSortParam = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+            ViewBag.MakeIdSortParam = sortOrder == "makeId" ? "makeId_desc" : "makeId";
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentFilter = searchString ?? currentFilter;
 

@@ -26,6 +26,9 @@
         <th>
             @Html.ActionLink("Abrv", "Index", new { sortOrder = ViewBag.AbrvSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
+        <th>
+            @Html.ActionLink("Make ID", "Index", new { sortOrder = ViewBag.MakeIdSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
         <th></th>
     </tr>
 
@@ -37,6 +40,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Abrv)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |

@@ -35,6 +35,7 @@ namespace MonoTest.Controllers
         {
             ViewBag.MakeSortParam = sortOrder == "make" ? "make_desc" : "make";
             ViewBag.AbrvSortParam = sortOrder == "abrv" ? "abrv_desc" : "abrv";
+            ViewBag.MakeIdSortParam = sortOrder == "makeId" ? "makeId_desc" : "makeId";
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentFilter = searchString ?? currentFilter;
 
@@ -54,7 +55,8 @@ namespace MonoTest.Controllers
             {
                 makes = makes
                     .Where(m => m.Name.ToLower().Contains(searchString.ToLower())
-                             || m.Abrv.ToLower().Contains(searchString.ToLower()))
+                             || m.Abrv.ToLower().Contains(searchString.ToLower())
+                             || m.Id.ToString().Contains(searchString.ToLower()))
                     .ToList();
             }
 
@@ -71,6 +73,12 @@ namespace MonoTest.Controllers
                     break;
                 case "abrv_desc":
                     makes = makes.OrderByDescending(m => m.Abrv).ToList();
+                    break;
+                case "makeId":
+                    makes = makes.OrderBy(m => m.Id).ToList();
+                    break;
+                case "makeId_desc":
+                    makes = makes.OrderByDescending(m => m.Id).ToList();
                     break;
                 default:
                     makes = makes.OrderBy(m => m.Name).ToList();

@@ -8,7 +8,7 @@
 
 <h2>Index</h2>
 
-@using (Html.BeginForm("Index", "VehicleMakes", FormMethod.Get))
+@using (Html.BeginForm("Index", "VehicleModels", FormMethod.Get))
 {
     <p>
         Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
@@ -22,13 +22,13 @@
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Make", "Index", new { sortOrder = ViewBag.ModelSortParam, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Model", "Index", new { sortOrder = ViewBag.ModelSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Make", "Index", new { sortOrder = ViewBag.AbrvSortParam, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Abrv", "Index", new { sortOrder = ViewBag.AbrvSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Make", "Index", new { sortOrder = ViewBag.MakeIdSortParam, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Make ID", "Index", new { sortOrder = ViewBag.MakeIdSortParam, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th></th>
     </tr>

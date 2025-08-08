@@ -36,7 +36,7 @@ namespace MonoTest.Controllers
         {
             ViewBag.MakeSortParam = sortOrder == "model" ? "model_desc" : "model";
             ViewBag.AbrvSortParam = sortOrder == "abrv" ? "abrv_desc" : "abrv";
-            ViewBag.MakeIdSortParam = sortOrder == "makeId" ? "makeId_desc" : "abrv";
+            ViewBag.MakeIdSortParam = sortOrder == "makeId" ? "makeId_desc" : "makeId";
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentFilter = searchString ?? currentFilter;
 
@@ -55,7 +55,8 @@ namespace MonoTest.Controllers
             {
                 models = models
                     .Where(m => m.Name.ToLower().Contains(searchString.ToLower())
-                             || m.Abrv.ToLower().Contains(searchString.ToLower()))
+                             || m.Abrv.ToLower().Contains(searchString.ToLower())
+                             || m.MakeId.ToString().Contains(searchString.ToLower()))
                     .ToList();
             }
 
@@ -74,7 +75,7 @@ namespace MonoTest.Controllers
                     models = models.OrderByDescending(m => m.Abrv).ToList();
                     break;
                 case "makeId":
-                    models = models.OrderByDescending(m => m.MakeId).ToList();
+                    models = models.OrderBy(m => m.MakeId).ToList();
                     break;
                 case "makeId_desc":
                     models = models.OrderByDescending(m => m.MakeId).ToList();
