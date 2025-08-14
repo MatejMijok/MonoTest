@@ -69,7 +69,8 @@ namespace MonoTest.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IVehicleService>().To<VehicleService>();
+            kernel.Bind<IVehicleMakeService>().To<VehicleMakeService>();
+            kernel.Bind<IVehicleModelService>().To<VehicleModelService>();
             kernel.Bind<MonoTestContext>().ToSelf().InRequestScope();
             kernel.Bind<IVehicleMakeRepository>().To<VehicleMakeRepository>();
             kernel.Bind<IVehicleModelRepository>().To<VehicleModelRepository>();

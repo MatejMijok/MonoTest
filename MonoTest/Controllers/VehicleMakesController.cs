@@ -21,13 +21,13 @@ namespace MonoTest.Controllers
     [Authorize(Roles = "admin")]
     public class VehicleMakesController : Controller
     {
-        private readonly IVehicleService _vehicleService;
+        private readonly IVehicleMakeService _vehicleMakeService;
         private readonly IMapper _mapper;
 
-        public VehicleMakesController(IVehicleService vehicleService, IMapper mapper)
+        public VehicleMakesController(IVehicleMakeService vehicleMakeService, IMapper mapper)
         {
-            _vehicleService = vehicleService;
-            _mapper = mapper;
+            _vehicleMakeService = vehicleMakeService;
+            _mapper= mapper;
         }
 
         // GET: VehicleMakes
@@ -48,7 +48,7 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var makes = await _vehicleService.GetVehicleMakesAsync();
+            var makes = await _vehicleMakeService.GetVehicleMakesAsync();
 
 
             if (!String.IsNullOrEmpty(searchString))
@@ -97,7 +97,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
+            var vehicleMake = await _vehicleMakeService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();
@@ -120,7 +120,7 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.AddVehicleMakeAsync(vehicleMakeViewModel);
+                await _vehicleMakeService.AddVehicleMakeAsync(vehicleMakeViewModel);
                 return RedirectToAction("Index");
             }
 
@@ -134,7 +134,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
+            var vehicleMake = await _vehicleMakeService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();
@@ -151,7 +151,7 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.UpdateVehicleMakeAsync(vehicleMake.Id, vehicleMake);
+                await _vehicleMakeService.UpdateVehicleMakeAsync(vehicleMake.Id, vehicleMake);
                 return RedirectToAction("Index");
             }
             return View(vehicleMake);
@@ -164,7 +164,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleMake = await _vehicleService.GetVehicleMakeByIdAsync(id);
+            var vehicleMake = await _vehicleMakeService.GetVehicleMakeByIdAsync(id);
             if (vehicleMake == null)
             {
                 return HttpNotFound();
@@ -177,7 +177,7 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleService.DeleteVehicleMakeAsync(id);
+            await _vehicleMakeService.DeleteVehicleMakeAsync(id);
             return RedirectToAction("Index");
         }
     }

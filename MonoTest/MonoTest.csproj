@@ -287,8 +287,10 @@
     <Compile Include="Repository\Interfaces\IVehicleModelRepository.cs" />
     <Compile Include="Repository\VehicleMakeRepository.cs" />
     <Compile Include="Repository\VehicleModelRepository.cs" />
-    <Compile Include="Services\Interfaces\IVehicleService.cs" />
-    <Compile Include="Services\VehicleService.cs" />
+    <Compile Include="Services\Interfaces\IVehicleMakeService.cs" />
+    <Compile Include="Services\Interfaces\IVehicleModelService.cs" />
+    <Compile Include="Services\VehicleMakeService.cs" />
+    <Compile Include="Services\VehicleModelService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\VehicleMakeViewModel.cs" />
     <Compile Include="ViewModels\VehicleModelViewModel.cs" />

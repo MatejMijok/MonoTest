@@ -12,12 +12,14 @@ namespace MonoTest.Controllers
 {
     public class HomeController : Controller
     {
-        public readonly IVehicleService _vehicleService;
+        public readonly IVehicleMakeService _vehicleMakeService;
+        public readonly IVehicleModelService _vehicleModelService;
         public readonly IMapper _mapper;
 
-        public HomeController(IVehicleService vehicleService, IMapper mapper)
+        public HomeController(IVehicleMakeService vehicleMakeService, IVehicleModelService vehicleModelService, IMapper mapper)
         {
-            _vehicleService = vehicleService;
+            _vehicleMakeService = vehicleMakeService;
+            _vehicleModelService = vehicleModelService;
             _mapper = mapper;
         }
         public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -39,7 +41,7 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var vehicleOverviewViewModel = await _vehicleService.GetVehicleOverviewAsync();
+            var vehicleOverviewViewModel = await _vehicleModelService.GetVehicleOverviewAsync();
 
             if (!String.IsNullOrEmpty(searchString)) 
             { 

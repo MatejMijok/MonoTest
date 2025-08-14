@@ -8,18 +8,12 @@ using System.Threading.Tasks;
 
 namespace MonoTest.Services.Interfaces
 {
-    public interface IVehicleService
+    public interface IVehicleMakeService
     {
         Task<IEnumerable<VehicleMakeViewModel>> GetVehicleMakesAsync();
         Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int? id);
         Task AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel);
         Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMakeViewModel);
         Task DeleteVehicleMakeAsync(int? id);
-        Task<IEnumerable<VehicleModelViewModel>> GetVehicleModelsAsync();
-        Task<VehicleModelViewModel> GetVehicleModelByIdAsync(int? id);
-        Task AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel);
-        Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModelViewModel);
-        Task DeleteVehicleModelAsync(int? id);
-        Task<IEnumerable<VehicleOverviewViewModel>> GetVehicleOverviewAsync();
     }
 }

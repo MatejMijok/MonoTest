@@ -22,12 +22,12 @@ namespace MonoTest.Controllers
     [Authorize(Roles = "admin")]
     public class VehicleModelsController : Controller
     {
-        private readonly IVehicleService _vehicleService;
+        private readonly IVehicleModelService _vehicleModelService;
         private readonly IMapper _mapper;
 
-        public VehicleModelsController(IVehicleService vehicleService, IMapper mapper)
+        public VehicleModelsController(IVehicleModelService vehicleModelService, IMapper mapper)
         {
-            _vehicleService = vehicleService;
+            _vehicleModelService = vehicleModelService;
             _mapper = mapper;
         }
 
@@ -49,7 +49,7 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var models = await _vehicleService.GetVehicleModelsAsync();
+            var models = await _vehicleModelService.GetVehicleModelsAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -98,7 +98,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -121,7 +121,7 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.AddVehicleModelAsync(vehicleModel);
+                await _vehicleModelService.AddVehicleModelAsync(vehicleModel);
                 return RedirectToAction("Index");
             }
 
@@ -135,7 +135,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -152,7 +152,7 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.UpdateVehicleModelAsync(vehicleModel.Id,vehicleModel);
+                await _vehicleModelService.UpdateVehicleModelAsync(vehicleModel.Id,vehicleModel);
                 return RedirectToAction("Index");
             }
             return View(vehicleModel);
@@ -165,7 +165,7 @@ namespace MonoTest.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var vehicleModel = await _vehicleService.GetVehicleModelByIdAsync(id);
+            var vehicleModel = await _vehicleModelService.GetVehicleModelByIdAsync(id);
             if (vehicleModel == null)
             {
                 return HttpNotFound();
@@ -178,7 +178,7 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleService.DeleteVehicleModelAsync(id);
+            await _vehicleModelService.DeleteVehicleModelAsync(id);
             return RedirectToAction("Index");
         }
     }
