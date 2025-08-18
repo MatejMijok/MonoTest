@@ -44,6 +44,10 @@ namespace MonoTest.Services
             var vehicleModel = await _modelRepository.GetVehicleModelsAsync();
             return _mapper.Map<IEnumerable<VehicleModelViewModel>>(vehicleModel);
         }
+        public async Task<PageViewModel<VehicleModel>> GetVehicleModelsAsync(int pageNumber, int pageSize, string search, string sortOrder)
+        {
+            return await _modelRepository.GetVehicleModelsAsync(pageNumber, pageSize, search, sortOrder);
+        }
         public async Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModel)
         {
             var vehicleModelEntity = _mapper.Map<VehicleModel>(vehicleModel);

@@ -49,46 +49,12 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var models = await _vehicleModelService.GetVehicleModelsAsync();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                models = models
-                    .Where(m => m.Name.ToLower().Contains(searchString.ToLower())
-                             || m.Abrv.ToLower().Contains(searchString.ToLower())
-                             || m.MakeId.ToString().Contains(searchString.ToLower()))
-                    .ToList();
-            }
-
-            switch (sortOrder) 
-            {
-                case "model":
-                    models = models.OrderBy(m => m.Name).ToList();
-                    break;
-                case "model_desc":
-                    models = models.OrderByDescending(m => m.Name).ToList();
-                    break;
-                case "abrv":
-                    models = models.OrderBy(m => m.Abrv).ToList();
-                    break;
-                case "abrv_desc":
-                    models = models.OrderByDescending(m => m.Abrv).ToList();
-                    break;
-                case "makeId":
-                    models = models.OrderBy(m => m.MakeId).ToList();
-                    break;
-                case "makeId_desc":
-                    models = models.OrderByDescending(m => m.MakeId).ToList();
-                    break;
-                default:
-                    models = models.OrderBy(m => m.Name).ToList();
-                    break;
-            }
-
             int pageSize = 5;
             int pageNumber = (page ?? 1);
 
-            return View(models.ToPagedList(pageNumber, pageSize));
+            var models = await _vehicleModelService.GetVehicleModelsAsync(pageNumber, pageSize, searchString, sortOrder);
+
+            return View(models);
         }
 
         // GET: VehicleModels/Details/5

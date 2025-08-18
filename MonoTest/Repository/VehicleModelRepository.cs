@@ -1,6 +1,7 @@
 ﻿using MonoTest.Data;
 using MonoTest.Models;
 using MonoTest.Repository.Interfaces;
+using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -23,6 +24,56 @@ namespace MonoTest.Repository
         public async Task<IEnumerable<VehicleModel>> GetVehicleModelsAsync()
         {
             return await _context.VehicleModels.ToListAsync();
+        }
+        public async Task<PageViewModel<VehicleModel>> GetVehicleModelsAsync(int pageNumber, int pageSize, string search, string sortOrder)
+        {
+            var query = _context.VehicleModels.AsQueryable();
+
+            if (search != null) 
+            { 
+                query = query.Where(vm => vm.Name.Contains(search.ToLower()) || 
+                                        vm.Abrv.Contains(search.ToLower()) || 
+                                        vm.MakeId.ToString().Contains(search));
+            }
+
+            switch (sortOrder) 
+            {
+                case "model":
+                    query = query.OrderBy(vm => vm.Name);
+                    break;
+                case "model_desc":
+                    query = query.OrderByDescending(vm => vm.Name);
+                    break;
+                case "abrv":
+                    query = query.OrderBy(vm => vm.Abrv);
+                    break;
+                case "abrv_desc":
+                    query = query.OrderByDescending(vm => vm.Abrv);
+                    break;
+                case "makeId":
+                    query = query.OrderBy(vm => vm.MakeId);
+                    break;
+                case "makeId_desc":
+                    query = query.OrderByDescending(vm => vm.MakeId);
+                    break;
+                default:
+                    query = query.OrderBy(vm => vm.Name);
+                    break;
+            }
+
+            var totalCount = await query.CountAsync();
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PageViewModel<VehicleModel>
+            {
+                Items = items,
+                TotalItems = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
         public async Task<VehicleModel> GetVehicleModelByIdAsync(int id) 
         { 

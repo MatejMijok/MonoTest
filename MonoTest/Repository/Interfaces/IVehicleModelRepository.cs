@@ -11,6 +11,7 @@ namespace MonoTest.Repository.Interfaces
     public interface IVehicleModelRepository
     {
         Task<IEnumerable<VehicleModel>> GetVehicleModelsAsync();
+        Task<PageViewModel<VehicleModel>> GetVehicleModelsAsync(int pageNumber, int pageSize, string search, string sortOrder);
         Task<VehicleModel> GetVehicleModelByIdAsync(int id);
         Task AddVehicleModelAsync(VehicleModel vehicleModel);
         Task UpdateVehicleModelAsync(int id, VehicleModel vehicleModel);

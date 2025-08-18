@@ -30,7 +30,7 @@ namespace MonoTest.Repository
             var query = _context.VehicleMakes.AsQueryable();
 
             if (search != null) {
-                query = query.Where(vm => vm.Name.Contains(search) || vm.Abrv.Contains(search));
+                query = query.Where(vm => vm.Name.Contains(search.ToLower()) || vm.Abrv.Contains(search.ToLower()));
             }
 
             switch (sortOrder) 
