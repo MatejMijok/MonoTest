@@ -1,9 +1,9 @@
-﻿@model PagedList.IPagedList<MonoTest.ViewModels.VehicleOverviewViewModel>
+﻿@model MonoTest.ViewModels.PageViewModel<MonoTest.ViewModels.VehicleOverviewViewModel>
 @using PagedList.Mvc;
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css"/>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 <h2>Index</h2>
 
-@{ 
+@{
     ViewBag.Title = "Home";
 }
 
@@ -33,7 +33,7 @@
     </tr>
 
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Items)
     {
         <tr>
             <td>
@@ -53,11 +53,16 @@
 
 </table>
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+Page @(Model.PageNumber < Model.PageNumber ? 0 : Model.PageNumber) of @Math.Ceiling((double)Model.TotalItems / Model.PageSize)
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new
-{
-    page,
-    sortOrder = ViewBag.CurrentSort,
-    currentFilter = ViewBag.CurrentFilter
-}))
+<div>
+    @if (Model.PageNumber > 1)
+    {
+        @Html.ActionLink("Previous", "Index", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+
+    @if (Model.PageNumber < Math.Ceiling((double)Model.TotalItems / Model.PageSize))
+    {
+        @Html.ActionLink("Next", "Index", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })
+    }
+</div>

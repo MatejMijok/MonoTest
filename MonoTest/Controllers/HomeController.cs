@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MonoTest.Services.Interfaces;
+using MonoTest.ViewModels;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -41,63 +42,12 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var vehicleOverviewViewModel = await _vehicleModelService.GetVehicleOverviewAsync();
-
-            if (!String.IsNullOrEmpty(searchString)) 
-            { 
-                vehicleOverviewViewModel = vehicleOverviewViewModel
-                    .Where(v => v.Name.ToLower().Contains(searchString.ToLower())
-                             || v.MakeName.ToLower().Contains(searchString.ToLower())
-                             || v.Abrv.ToLower().Contains(searchString.ToLower())
-                             || v.MakeAbrv.ToLower().Contains(searchString.ToLower()))
-                    .ToList();
-            }
-
-            switch (sortOrder)
-            {
-                case "make_desc":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderByDescending(v => v.MakeName).ToList();
-                    break;
-                case "make":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderBy(v => v.MakeName).ToList();
-                    break;
-                case "model_name_desc":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderByDescending(v => v.Name).ToList();
-                    break;
-                case "model_name":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderBy(v => v.Name).ToList();
-                    break;
-                case "model_abrv_desc":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderByDescending(v => v.Abrv).ToList();
-                    break;
-                case "model_abrv":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderBy(v => v.Abrv).ToList();
-                    break;
-                case "abrv_desc":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderByDescending(v => v.MakeAbrv).ToList();
-                    break;
-                case "abrv":
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderBy(v => v.MakeAbrv).ToList();
-                    break;
-                default:
-                    vehicleOverviewViewModel = vehicleOverviewViewModel
-                        .OrderBy(v => v.MakeName).ToList();
-                    break;
-            }
-
-
             int pageSize = 5;
             int pageNumber = (page ?? 1);
 
-            return View(vehicleOverviewViewModel.ToPagedList(pageNumber, pageSize));
+            var vehicleOverviewViewModel = await _vehicleModelService.GetVehicleOverviewAsync(pageNumber, pageSize, searchString, sortOrder);
+
+            return View(vehicleOverviewViewModel);
         }
 
         public ActionResult About()

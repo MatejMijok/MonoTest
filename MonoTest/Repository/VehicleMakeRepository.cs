@@ -90,7 +90,7 @@ namespace MonoTest.Repository
        public async Task DeleteVehicleMakeAsync(int id)
         { 
             var make = await _context.VehicleMakes.FindAsync(id);
-            var models = await _context.VehicleModels.Where(vm => vm.MakeId == id).ToListAsync();
+            var models = await _context.VehicleModels.Where(vm => vm.VehicleMakeId == id).ToListAsync();
 
             _context.VehicleModels.RemoveRange(models);
 

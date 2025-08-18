@@ -33,7 +33,7 @@ namespace MonoTest.Repository
             { 
                 query = query.Where(vm => vm.Name.Contains(search.ToLower()) || 
                                         vm.Abrv.Contains(search.ToLower()) || 
-                                        vm.MakeId.ToString().Contains(search));
+                                        vm.VehicleMakeId.ToString().Contains(search));
             }
 
             switch (sortOrder) 
@@ -51,10 +51,10 @@ namespace MonoTest.Repository
                     query = query.OrderByDescending(vm => vm.Abrv);
                     break;
                 case "makeId":
-                    query = query.OrderBy(vm => vm.MakeId);
+                    query = query.OrderBy(vm => vm.VehicleMakeId);
                     break;
                 case "makeId_desc":
-                    query = query.OrderByDescending(vm => vm.MakeId);
+                    query = query.OrderByDescending(vm => vm.VehicleMakeId);
                     break;
                 default:
                     query = query.OrderBy(vm => vm.Name);
@@ -75,12 +75,87 @@ namespace MonoTest.Repository
                 PageSize = pageSize
             };
         }
+        public async Task<PageViewModel<VehicleOverviewViewModel>> GetVehicleOverviewAsync(int pageNumber, int pageSize, string search, string sortOrder) 
+        { 
+            var query = _context.VehicleModels.Include(vm => vm.VehicleMake).AsQueryable();
+
+            if (search != null) 
+            { 
+                query = query.Where(vm => vm.Name.Contains(search.ToLower()) || 
+                                        vm.Abrv.Contains(search.ToLower()) ||
+                                        vm.VehicleMake.Name.Contains(search.ToLower()) ||
+                                        vm.VehicleMake.Name.Contains(search.ToLower()));
+            }
+
+            switch (sortOrder) 
+            {
+                case "make":
+                    query = query.OrderBy(vm => vm.VehicleMake.Name);
+                    break;
+                case "make_desc":
+                    query = query.OrderByDescending(vm => vm.VehicleMake.Name);
+                    break;
+                case "model_name":
+                    query = query.OrderBy(vm => vm.Name);
+                    break;
+                case "model_name_desc":
+                    query = query.OrderByDescending(vm => vm.Name);
+                    break;
+                case "model_abrv":
+                    query = query.OrderBy(vm => vm.Abrv);
+                    break;
+                case "model_abrv_desc":
+                    query = query.OrderByDescending(vm => vm.Abrv);
+                    break;
+                case "abrv":
+                    query = query.OrderBy(vm => vm.VehicleMake.Abrv);
+                    break;
+                case "abrv_desc":
+                    query = query.OrderByDescending(vm => vm.VehicleMake.Abrv);
+                    break;
+                default:
+                    query = query.OrderBy(vm => vm.VehicleMake.Name);
+                    break;
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var itemEntities = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var items = itemEntities.Select(vm => new VehicleOverviewViewModel
+            {
+                Name = vm.Name,
+                Abrv = vm.Abrv,
+                MakeName = vm.VehicleMake.Name,
+                MakeAbrv = vm.VehicleMake.Abrv
+            }).ToList();
+
+            return new PageViewModel<VehicleOverviewViewModel>
+            {
+                Items = items,
+                TotalItems = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
         public async Task<VehicleModel> GetVehicleModelByIdAsync(int id) 
         { 
             return await _context.VehicleModels.FindAsync(id);
         }
         public async Task AddVehicleModelAsync(VehicleModel vehicleModel) 
         { 
+            var make = await _context.VehicleMakes.FindAsync(vehicleModel.VehicleMakeId);
+
+            if (make == null)
+            {
+                throw new ArgumentException("Invalid Vehicle Make ID");
+            }
+
+            vehicleModel.VehicleMake = make;
+
             _context.VehicleModels.Add(vehicleModel);
             await _context.SaveChangesAsync();
         }

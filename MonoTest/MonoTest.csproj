@@ -276,6 +276,14 @@
     <Compile Include="Migrations\202508030824039_InitialCreate.Designer.cs">
       <DependentUpon>202508030824039_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202508181440391_RenameMakeIdToVehicleMakeId.cs" />
+    <Compile Include="Migrations\202508181440391_RenameMakeIdToVehicleMakeId.Designer.cs">
+      <DependentUpon>202508181440391_RenameMakeIdToVehicleMakeId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202508181459451_AddedForeignKeyAnnotation.cs" />
+    <Compile Include="Migrations\202508181459451_AddedForeignKeyAnnotation.Designer.cs">
+      <DependentUpon>202508181459451_AddedForeignKeyAnnotation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -413,6 +421,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202508030824039_InitialCreate.resx">
       <DependentUpon>202508030824039_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202508181440391_RenameMakeIdToVehicleMakeId.resx">
+      <DependentUpon>202508181440391_RenameMakeIdToVehicleMakeId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202508181459451_AddedForeignKeyAnnotation.resx">
+      <DependentUpon>202508181459451_AddedForeignKeyAnnotation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

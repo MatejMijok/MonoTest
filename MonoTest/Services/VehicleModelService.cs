@@ -5,6 +5,8 @@ using MonoTest.Services.Interfaces;
 using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -53,20 +55,9 @@ namespace MonoTest.Services
             var vehicleModelEntity = _mapper.Map<VehicleModel>(vehicleModel);
             await _modelRepository.UpdateVehicleModelAsync(id.Value, vehicleModelEntity);
         }
-        public async Task<IEnumerable<VehicleOverviewViewModel>> GetVehicleOverviewAsync()
+        public async Task<PageViewModel<VehicleOverviewViewModel>> GetVehicleOverviewAsync(int pageNumber, int pageSize, string search, string sortOrder)
         {
-            var makes = await _makeRepository.GetVehicleMakesAsync();
-            var models = await _modelRepository.GetVehicleModelsAsync();
-
-            var vehicleOverviewList = models.Select(model => new VehicleOverviewViewModel
-            {
-                Name = model.Name,
-                Abrv = model.Abrv,
-                MakeName = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Name,
-                MakeAbrv = makes.FirstOrDefault(make => make.Id == model.MakeId)?.Abrv
-            }).ToList();
-
-            return vehicleOverviewList;
+            return await _modelRepository.GetVehicleOverviewAsync(pageNumber, pageSize, search, sortOrder);
         }
     }
 }
