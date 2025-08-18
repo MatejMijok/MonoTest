@@ -47,6 +47,11 @@ namespace MonoTest.Services
             return _mapper.Map<IEnumerable<VehicleMakeViewModel>>(makes);
         }
 
+        public async Task<PageViewModel<VehicleMake>> GetVehicleMakesAsync(int pageNumber, int pageSize, string search, string sortOrder) 
+        { 
+            return await _makeRepository.GetVehicleMakesAsync(pageNumber, pageSize, search, sortOrder);
+        }
+
         public async Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMake)
         {
             var vehicleMakeEntity = _mapper.Map<VehicleMake>(vehicleMake);

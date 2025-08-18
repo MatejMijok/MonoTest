@@ -292,6 +292,7 @@
     <Compile Include="Services\VehicleMakeService.cs" />
     <Compile Include="Services\VehicleModelService.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\VehicleMakeViewModel.cs" />
     <Compile Include="ViewModels\VehicleModelViewModel.cs" />
     <Compile Include="ViewModels\VehicleOverviewViewModel.cs" />

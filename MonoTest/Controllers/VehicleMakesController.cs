@@ -48,46 +48,12 @@ namespace MonoTest.Controllers
                 searchString = currentFilter;
             }
 
-            var makes = await _vehicleMakeService.GetVehicleMakesAsync();
-
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                makes = makes
-                    .Where(m => m.Name.ToLower().Contains(searchString.ToLower())
-                             || m.Abrv.ToLower().Contains(searchString.ToLower())
-                             || m.Id.ToString().Contains(searchString.ToLower()))
-                    .ToList();
-            }
-
-            switch (sortOrder) 
-            {
-                case "make":
-                    makes = makes.OrderBy(m => m.Name).ToList();
-                    break;
-                case "make_desc":
-                    makes = makes.OrderByDescending(m => m.Name).ToList();
-                    break;  
-                case "abrv":
-                    makes = makes.OrderBy(m => m.Abrv).ToList();
-                    break;
-                case "abrv_desc":
-                    makes = makes.OrderByDescending(m => m.Abrv).ToList();
-                    break;
-                case "makeId":
-                    makes = makes.OrderBy(m => m.Id).ToList();
-                    break;
-                case "makeId_desc":
-                    makes = makes.OrderByDescending(m => m.Id).ToList();
-                    break;
-                default:
-                    makes = makes.OrderBy(m => m.Name).ToList();
-                    break;
-            }
             int pageSize = 5;
             int pageNumber = (page ?? 1);
 
-            return View(makes.ToPagedList(pageNumber, pageSize));
+            var pagedMakes = await _vehicleMakeService.GetVehicleMakesAsync(pageNumber, pageSize, searchString, sortOrder);
+
+            return View(pagedMakes);
         }
 
         // GET: VehicleMakes/Details/5

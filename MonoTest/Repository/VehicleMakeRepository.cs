@@ -1,6 +1,7 @@
 ﻿using MonoTest.Data;
 using MonoTest.Models;
 using MonoTest.Repository.Interfaces;
+using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -19,9 +20,58 @@ namespace MonoTest.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync() 
+        public async Task<IEnumerable<VehicleMake>> GetVehicleMakesAsync()
         {
             return await _context.VehicleMakes.ToListAsync();
+        }
+
+        public async Task<PageViewModel<VehicleMake>> GetVehicleMakesAsync(int pageNumber, int pageSize, string search, string sortOrder) 
+        {
+            var query = _context.VehicleMakes.AsQueryable();
+
+            if (search != null) {
+                query = query.Where(vm => vm.Name.Contains(search) || vm.Abrv.Contains(search));
+            }
+
+            switch (sortOrder) 
+            {
+                case "make":
+                    query = query.OrderBy(vm => vm.Name);
+                    break;
+                case "make_desc":
+                    query = query.OrderByDescending(vm => vm.Name);
+                    break;
+                case "abrv":
+                    query = query.OrderBy(vm => vm.Abrv);
+                    break;
+                case "abrv_desc":
+                    query = query.OrderByDescending(vm => vm.Abrv);
+                    break;
+                case "makeId":
+                    query = query.OrderBy(vm => vm.Id);
+                    break;
+                case "makeId_desc":
+                    query = query.OrderByDescending(vm => vm.Id);
+                    break;
+                default:
+                    query = query.OrderBy(vm => vm.Name);
+                    break;
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PageViewModel<VehicleMake>
+            {
+                Items = items,
+                TotalItems = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
         public async Task<VehicleMake> GetVehicleMakeByIdAsync(int id)
         { 
