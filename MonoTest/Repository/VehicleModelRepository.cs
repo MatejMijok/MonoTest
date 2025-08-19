@@ -29,10 +29,10 @@ namespace MonoTest.Repository
         {
             var query = _context.VehicleModels.AsQueryable();
 
-            if (search != null) 
+            if (!string.IsNullOrEmpty(search)) 
             { 
                 query = query.Where(vm => vm.Name.Contains(search.ToLower()) || 
-                                        vm.Abrv.Contains(search.ToLower()) || 
+                                        vm.Abrv.Contains(search.ToLower()) ||
                                         vm.VehicleMakeId.ToString().Contains(search));
             }
 
@@ -79,12 +79,12 @@ namespace MonoTest.Repository
         { 
             var query = _context.VehicleModels.Include(vm => vm.VehicleMake).AsQueryable();
 
-            if (search != null) 
+            if (!string.IsNullOrEmpty(search)) 
             { 
                 query = query.Where(vm => vm.Name.Contains(search.ToLower()) || 
                                         vm.Abrv.Contains(search.ToLower()) ||
                                         vm.VehicleMake.Name.Contains(search.ToLower()) ||
-                                        vm.VehicleMake.Name.Contains(search.ToLower()));
+                                        vm.VehicleMake.Abrv.Contains(search.ToLower()));
             }
 
             switch (sortOrder) 

@@ -39,7 +39,7 @@ namespace MonoTest.Controllers
             ViewBag.CurrentSort = sortOrder;
             ViewBag.CurrentFilter = searchString ?? currentFilter;
 
-            if (searchString != null)
+            if (!string.IsNullOrEmpty(searchString))
             {
                 page = 1;
             }
