@@ -86,10 +86,14 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleMakeService.AddVehicleMakeAsync(vehicleMakeViewModel);
+                var result = await _vehicleMakeService.AddVehicleMakeAsync(vehicleMakeViewModel);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Unable to create vehicle make. Please try again.");
+                    return View(vehicleMakeViewModel);
+                }
                 return RedirectToAction("Index");
             }
-
             return View(vehicleMakeViewModel);
         }
 
@@ -117,7 +121,12 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleMakeService.UpdateVehicleMakeAsync(vehicleMake.Id, vehicleMake);
+                var result = await _vehicleMakeService.UpdateVehicleMakeAsync(vehicleMake.Id, vehicleMake);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Unable to update vehicle make. Please try again.");
+                    return View(vehicleMake);
+                }
                 return RedirectToAction("Index");
             }
             return View(vehicleMake);
@@ -143,7 +152,12 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleMakeService.DeleteVehicleMakeAsync(id);
+            var result = await _vehicleMakeService.DeleteVehicleMakeAsync(id);
+            if (!result)
+            {
+                ModelState.AddModelError("", "Unable to delete vehicle make. Please try again.");
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
     }

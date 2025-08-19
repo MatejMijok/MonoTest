@@ -24,15 +24,15 @@ namespace MonoTest.Services
             _mapper = mapper;
         }
 
-        public async Task AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
+        public async Task<bool> AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel)
         {
             var vehicleMake = _mapper.Map<VehicleMake>(vehicleMakeViewModel);
-            await _makeRepository.AddVehicleMakeAsync(vehicleMake);
+            return await _makeRepository.AddVehicleMakeAsync(vehicleMake);
         }
 
-        public async Task DeleteVehicleMakeAsync(int? id)
+        public async Task<bool> DeleteVehicleMakeAsync(int? id)
         {
-            await _makeRepository.DeleteVehicleMakeAsync(id.Value);
+            return await _makeRepository.DeleteVehicleMakeAsync(id.Value);
         }
 
         public async Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int? id)
@@ -52,10 +52,10 @@ namespace MonoTest.Services
             return await _makeRepository.GetVehicleMakesAsync(pageNumber, pageSize, search, sortOrder);
         }
 
-        public async Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMake)
+        public async Task<bool> UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMake)
         {
             var vehicleMakeEntity = _mapper.Map<VehicleMake>(vehicleMake);
-            await _makeRepository.UpdateVehicleMakeAsync(id.Value, vehicleMakeEntity);
+            return await _makeRepository.UpdateVehicleMakeAsync(id.Value, vehicleMakeEntity);
         }
     }
 }

@@ -13,8 +13,8 @@ namespace MonoTest.Services.Interfaces
         Task<IEnumerable<VehicleMakeViewModel>> GetVehicleMakesAsync();
         Task<PageViewModel<VehicleMake>> GetVehicleMakesAsync(int pageNumber, int pageSize, string search, string sortOrder);
         Task<VehicleMakeViewModel> GetVehicleMakeByIdAsync(int? id);
-        Task AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel);
-        Task UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMakeViewModel);
-        Task DeleteVehicleMakeAsync(int? id);
+        Task<bool> AddVehicleMakeAsync(VehicleMakeViewModel vehicleMakeViewModel);
+        Task<bool> UpdateVehicleMakeAsync(int? id, VehicleMakeViewModel vehicleMakeViewModel);
+        Task<bool> DeleteVehicleMakeAsync(int? id);
     }
 }

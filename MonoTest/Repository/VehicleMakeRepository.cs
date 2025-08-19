@@ -77,26 +77,47 @@ namespace MonoTest.Repository
         { 
             return await _context.VehicleMakes.FindAsync(id);
         }
-        public async Task AddVehicleMakeAsync(VehicleMake vehicleMake) 
+        public async Task<bool> AddVehicleMakeAsync(VehicleMake vehicleMake) 
         {
-            _context.VehicleMakes.Add(vehicleMake);
-            await _context.SaveChangesAsync();
+            try 
+            {
+                _context.VehicleMakes.Add(vehicleMake);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) {
+                return false;
+            }
+
         }
-        public async Task UpdateVehicleMakeAsync(int id, VehicleMake vehicleMake)
-        { 
-            _context.Entry(vehicleMake).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+        public async Task<bool> UpdateVehicleMakeAsync(int id, VehicleMake vehicleMake)
+        {
+            try 
+            {
+                _context.Entry(vehicleMake).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
         }
-       public async Task DeleteVehicleMakeAsync(int id)
-        { 
-            var make = await _context.VehicleMakes.FindAsync(id);
-            var models = await _context.VehicleModels.Where(vm => vm.VehicleMakeId == id).ToListAsync();
-
-            _context.VehicleModels.RemoveRange(models);
-
-            _context.VehicleMakes.Remove(make);
-
-            await _context.SaveChangesAsync();
+       public async Task<bool> DeleteVehicleMakeAsync(int id)
+        {
+            try 
+            {
+                var make = await _context.VehicleMakes.FindAsync(id);
+                var models = await _context.VehicleModels.Where(vm => vm.VehicleMakeId == id).ToListAsync();
+                _context.VehicleModels.RemoveRange(models);
+                _context.VehicleMakes.Remove(make);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
         }
     }
 }
