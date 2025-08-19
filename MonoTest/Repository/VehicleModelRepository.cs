@@ -145,29 +145,46 @@ namespace MonoTest.Repository
         { 
             return await _context.VehicleModels.FindAsync(id);
         }
-        public async Task AddVehicleModelAsync(VehicleModel vehicleModel) 
-        { 
-            var make = await _context.VehicleMakes.FindAsync(vehicleModel.VehicleMakeId);
-
-            if (make == null)
+        public async Task<bool> AddVehicleModelAsync(VehicleModel vehicleModel)
+        {
+            try 
             {
-                throw new ArgumentException("Invalid Vehicle Make ID");
+                _context.VehicleModels.Add(vehicleModel);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateVehicleModelAsync(int id, VehicleModel vehicleModel)
+        {
+            try 
+            {
+                _context.Entry(vehicleModel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
             }
 
-            vehicleModel.VehicleMake = make;
+        }
+        public async Task<bool> DeleteVehicleModelAsync(int id)
+        {
+            try
+            {
+                _context.VehicleModels.Remove(await GetVehicleModelByIdAsync(id));
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
 
-            _context.VehicleModels.Add(vehicleModel);
-            await _context.SaveChangesAsync();
-        }
-        public async Task UpdateVehicleModelAsync(int id, VehicleModel vehicleModel)
-        { 
-            _context.Entry(vehicleModel).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-        public async Task DeleteVehicleModelAsync(int id) 
-        { 
-            _context.VehicleModels.Remove(await GetVehicleModelByIdAsync(id));
-            await _context.SaveChangesAsync();
         }
     }
 }

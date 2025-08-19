@@ -87,7 +87,12 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleModelService.AddVehicleModelAsync(vehicleModel);
+                var result = await _vehicleModelService.AddVehicleModelAsync(vehicleModel);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "An error occurred while adding the vehicle model.");
+                    return View(vehicleModel);
+                }
                 return RedirectToAction("Index");
             }
 
@@ -118,7 +123,12 @@ namespace MonoTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleModelService.UpdateVehicleModelAsync(vehicleModel.Id,vehicleModel);
+                var result = await _vehicleModelService.UpdateVehicleModelAsync(vehicleModel.Id,vehicleModel);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "An error occurred while updating the vehicle model.");
+                    return View(vehicleModel);
+                }
                 return RedirectToAction("Index");
             }
             return View(vehicleModel);
@@ -144,7 +154,12 @@ namespace MonoTest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            await _vehicleModelService.DeleteVehicleModelAsync(id);
+            var result = await _vehicleModelService.DeleteVehicleModelAsync(id);
+            if (!result)
+            {
+                ModelState.AddModelError("", "An error occurred while deleting the vehicle model.");
+                return View();
+            }
             return RedirectToAction("Index");
         }
     }

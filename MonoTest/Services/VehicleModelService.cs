@@ -5,6 +5,7 @@ using MonoTest.Services.Interfaces;
 using MonoTest.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Data.SqlClient;
 using System.Drawing.Printing;
 using System.Linq;
@@ -26,15 +27,16 @@ namespace MonoTest.Services
             _mapper = mapper;
         }
 
-        public async Task AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
+        public async Task<bool> AddVehicleModelAsync(VehicleModelViewModel vehicleModelViewModel)
         {
             var vehicleModel = _mapper.Map<VehicleModel>(vehicleModelViewModel);
-            await _modelRepository.AddVehicleModelAsync(vehicleModel);
+            var result = await _modelRepository.AddVehicleModelAsync(vehicleModel);
+            return result;
         }
 
-        public async Task DeleteVehicleModelAsync(int? id)
+        public async Task<bool> DeleteVehicleModelAsync(int? id)
         {
-            await _modelRepository.DeleteVehicleModelAsync(id.Value);
+            return await _modelRepository.DeleteVehicleModelAsync(id.Value);
         }
         public async Task<VehicleModelViewModel> GetVehicleModelByIdAsync(int? id)
         {
@@ -50,10 +52,10 @@ namespace MonoTest.Services
         {
             return await _modelRepository.GetVehicleModelsAsync(pageNumber, pageSize, search, sortOrder);
         }
-        public async Task UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModel)
+        public async Task<bool> UpdateVehicleModelAsync(int? id, VehicleModelViewModel vehicleModel)
         {
             var vehicleModelEntity = _mapper.Map<VehicleModel>(vehicleModel);
-            await _modelRepository.UpdateVehicleModelAsync(id.Value, vehicleModelEntity);
+            return await _modelRepository.UpdateVehicleModelAsync(id.Value, vehicleModelEntity);
         }
         public async Task<PageViewModel<VehicleOverviewViewModel>> GetVehicleOverviewAsync(int pageNumber, int pageSize, string search, string sortOrder)
         {
